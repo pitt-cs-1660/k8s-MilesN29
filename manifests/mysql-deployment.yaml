@@ -77,7 +77,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: wp-pv-claim
+  name: mysql-pv-claim
 spec:
   accessModes:
     - ReadWriteOnce
