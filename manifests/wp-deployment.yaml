@@ -65,9 +65,18 @@ spec:
         volumeMounts:
           - name: wordpress-persistent-storage
             mountPath: /var/www/html
-
----
       volumes:
         - name: wordpress-persistent-storage
           persistentVolumeClaim:
             claimName: wordpress-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: wp-pv-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

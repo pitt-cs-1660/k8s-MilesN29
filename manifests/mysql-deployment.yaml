@@ -44,12 +44,12 @@ spec:
         name: mysql
         env:
           - name: MYSQL_DATABASE
-            valueForm:
+            valueFrom:
               configMapKeyRef:
                 name: wordpress-mysql
                 key: database
-          - name: MYSWL_USER
-            valueForm:  
+          - name: MYSQL_USER
+            valueFrom:  
               configMapKeyRef:
                 name: wordpress-mysql
                 key: username
@@ -69,8 +69,19 @@ spec:
         volumeMounts:
           - name: mysql-persistent-storage
             mountPath: /var/lib/mysql
----
       volumes:
         - name: mysql-persistent-storage
           persistentVolumeClaim:
             claimName: mysql-pv-claim
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: wp-pv-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
