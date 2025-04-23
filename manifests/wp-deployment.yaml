@@ -18,7 +18,8 @@ kind: ConfigMap
 metadata:
   name: wordpress
 data:
-  database: wordpress-mysql
+  database: wordpress
+  host: wordpress-mysql
   username: wordpress
 ---
 apiVersion: apps/v1
@@ -47,18 +48,23 @@ spec:
           - name: WORDPRESS_DB_HOST
             valueFrom:
               configMapKeyRef:
-                name: wordpress
-                key: database
+                name: wordpress-mysql
+                key: host
           - name: WORDPRESS_DB_USER
             valueFrom:
               configMapKeyRef:
-                name: wordpress
+                name: wordpress-mysql
                 key: username
           - name: WORDPRESS_DB_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: database
-                key: root-password
+                key: user-password
+          - name: WORDPRESS_DB_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: wordpress-mysql
+                key: database
         ports:
         - containerPort: 80
           name: wordpress
@@ -68,7 +74,7 @@ spec:
       volumes:
         - name: wordpress-persistent-storage
           persistentVolumeClaim:
-            claimName: wordpress-pvc
+            claimName: wp-pv-claim
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
